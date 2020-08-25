@@ -48,7 +48,7 @@ module.exports = function(options)
 		// }
 		var this_scriptDirectory = scriptDirectory
 		const lastChar = this_scriptDirectory.charAt(this_scriptDirectory.length - 1)
-		if (lastChar == "/" || lastChar == "\\") { 
+		if (lastChar == "/" || lastChar == "\\") {
 			// ^-- this is not a '\\' on Windows because emscripten actually appends a '/'
 			this_scriptDirectory = this_scriptDirectory.substring(0, this_scriptDirectory.length - 1) // remove trailing "/"
 		}
@@ -89,7 +89,7 @@ module.exports = function(options)
 			Module_template["locateFile"] = locateFile
 			//
 			// NOTE: This requires src/module-post.js to be included as post-js in CMakeLists.txt under a wasm build
-			require(`./MyMoneroCoreCpp_WASM`)(Module_template).ready.then(function(thisModule) 
+			require(`./MyMoneroCoreCpp_WASM`)(Module_template).ready.then(function(thisModule)
 			{
 				const instance = new MyMoneroCoreBridgeClass(thisModule);
 				resolve(instance);
@@ -127,7 +127,7 @@ module.exports = function(options)
 				};
 			} else if (ENVIRONMENT_IS_WEB||ENVIRONMENT_IS_WORKER) {
 				read_fn = function(url)
-				{ // it's an option to move this over to fetch, but, fetch requires a polyfill for these older browsers anyway - making fetch an automatic dep just for asmjs fallback - and the github/fetch polyfill does not appear to actually support mode (for 'same-origin' policy) anyway - probably not worth it yet 
+				{ // it's an option to move this over to fetch, but, fetch requires a polyfill for these older browsers anyway - making fetch an automatic dep just for asmjs fallback - and the github/fetch polyfill does not appear to actually support mode (for 'same-origin' policy) anyway - probably not worth it yet
 					var xhr = new XMLHttpRequest()
 					xhr.open("GET", url, false)
 					xhr.send(null)
@@ -152,7 +152,7 @@ module.exports = function(options)
 				Module_template['asm'] = Module['asm']
 				Module = null
 				resolve(new MyMoneroCoreBridgeClass(require("./MyMoneroCoreCpp_ASMJS")(Module_template)))
-			}, 1) 
+			}, 1)
 		}
 	});
 };
