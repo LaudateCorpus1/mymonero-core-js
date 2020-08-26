@@ -101,7 +101,7 @@ var MyMoneroCoreCpp = (function() {
             } else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
                 if (ENVIRONMENT_IS_WORKER) {
                     scriptDirectory = self.location.href
-                } else if (document.currentScript) {
+                } else if (typeof document !== 'undefined' && document.currentScript) {
                     scriptDirectory = document.currentScript.src
                 }
                 if (_scriptDir) {
@@ -144,7 +144,9 @@ var MyMoneroCoreCpp = (function() {
                     xhr.send(null)
                 }
                 Module['setWindowTitle'] = function(title) {
-                    document.title = title
+                    if (typeof document !== 'undefined') {
+                        document.title = title
+                    }
                 }
             } else {
                 throw new Error('environment detection error')
