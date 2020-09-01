@@ -1,5 +1,24 @@
 # MyMonero Core JS
 
+# MyMonero Core JS
+
+FAST INSTALL
+
+emsdk install 1.38.48-upstream
+
+
+FAST BUILD
+
+source ../emsdk/emsdk_env.sh  
+
+sh ./bin/build-boost-emscripten.sh
+
+sh ./bin/build-emcpp.sh
+
+
+
+
+
 ### Info
 
 1. Legal
