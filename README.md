@@ -1,11 +1,12 @@
-# MyMonero Core JS
-
+Ksu Zhytomirsky, [04.09.20 22:34]
 # MyMonero Core JS
 
 FAST INSTALL
 
-emsdk install 1.38.48-upstream
+./emsdk install 1.38.48
+./emsdk activate 1.38.48
 
+contrib/boost-sdk from boost_1_71_0
 
 FAST BUILD
 
@@ -14,6 +15,12 @@ source ../emsdk/emsdk_env.sh
 sh ./bin/build-boost-emscripten.sh
 
 sh ./bin/build-emcpp.sh
+
+
+FAST INFO
+
+https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#implement-c-in-javascript
+
 
 
 
