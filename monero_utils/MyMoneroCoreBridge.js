@@ -84,7 +84,7 @@ module.exports = function(options)
 	}
 	return new Promise(function(resolve, reject) {
 		var Module_template = {}
-		if (options.asmjs != true || options.wasm == true) { // wasm is force
+		if (false && (options.asmjs != true || options.wasm == true)) { // wasm is force
 			console.log("Using wasm: ", true)
 			//
 			Module_template["locateFile"] = locateFile
