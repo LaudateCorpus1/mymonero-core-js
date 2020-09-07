@@ -28,7 +28,7 @@
 //
 "use strict";
 //
-const Lazy_KeyImage = function(
+const Lazy_KeyImage = async function(
 	mutable_keyImagesByCacheKey, // pass a mutable JS dictionary
 	tx_pub_key,
 	out_index,
@@ -36,7 +36,7 @@ const Lazy_KeyImage = function(
 	view_key__private,
 	spend_key__public,
 	spend_key__private,
-	coreBridge_instance // must pass this so this fn can remain synchronous
+	coreBridge_instance
 ) {
 	var cache_index = tx_pub_key + ":" + public_address + ":" + out_index;
 	const cached__key_image = mutable_keyImagesByCacheKey[cache_index];
@@ -46,7 +46,7 @@ const Lazy_KeyImage = function(
 	) {
 		return cached__key_image;
 	}
-	var key_image = coreBridge_instance.generate_key_image(
+	var key_image = await coreBridge_instance.generate_key_image(
 		tx_pub_key,
 		view_key__private,
 		spend_key__public,
