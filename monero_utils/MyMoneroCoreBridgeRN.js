@@ -670,6 +670,9 @@ class MyMoneroCoreBridgeRN {
             null,
             null
         )
+        if (typeof decoy.err_msg !== 'undefined') {
+            throw new Error(decoy.err_msg)
+        }
 
 		const amounts = decoy.using_outs.map(o => (o.rct ? '0' : o.amount.toString()))
 		const linkParams = {
