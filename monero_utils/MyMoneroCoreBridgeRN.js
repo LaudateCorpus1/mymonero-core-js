@@ -629,58 +629,58 @@ class MyMoneroCoreBridgeRN {
         }
     }
 
-	/**
+    /**
      * added by Ksu to "almost" unify with wasm / asm
-	 * @param params.is_sweeping,
-	 * @param params.payment_id_string // may be nil or undefined
-	 * @param params.sending_amount // sending amount
-	 * @param params.from_address_string
-	 * @param params.sec_viewKey_string
-	 * @param params.sec_spendKey_string
-	 * @param params.pub_spendKey_string
-	 * @param params.to_address_string
-	 * @param params.priority,
-	 * @param params.unlock_time
-	 * @param params.nettype
-	 * @param params.get_unspent_outs_fn
-	 * @param params.get_random_outs_fn
-	 * @param params.submit_raw_tx_fn
-	 * @param params.status_update_fn
-	 * @param params.error_fn
-	 * @param params.success_fn
-	 */
-	async async__send_funds(params) {
+     * @param params.is_sweeping,
+     * @param params.payment_id_string // may be nil or undefined
+     * @param params.sending_amount // sending amount
+     * @param params.from_address_string
+     * @param params.sec_viewKey_string
+     * @param params.sec_spendKey_string
+     * @param params.pub_spendKey_string
+     * @param params.to_address_string
+     * @param params.priority,
+     * @param params.unlock_time
+     * @param params.nettype
+     * @param params.get_unspent_outs_fn
+     * @param params.get_random_outs_fn
+     * @param params.submit_raw_tx_fn
+     * @param params.status_update_fn
+     * @param params.error_fn
+     * @param params.success_fn
+     */
+    async async__send_funds(params) {
 
-		let outputs = await params.get_unspent_outs_fn({
-			address: params.from_address_string,
-			amount: params.sending_amount,
-			dust_threshold: '2000000000',
-			mixin: MIXIN,
-			use_dust: true,
-			view_key: params.sec_viewKey_string
-		})
+        let outputs = await params.get_unspent_outs_fn({
+            address: params.from_address_string,
+            amount: '0',
+            dust_threshold: '2000000000',
+            mixin: MIXIN,
+            use_dust: true,
+            view_key: params.sec_viewKey_string
+        })
 
         let decoy = await this.send_step1__prepare_params_for_get_decoys(
-            params.is_sweeping,
+            false,
             params.sending_amount, // this may be 0 if sweeping
             outputs.per_byte_fee,
             outputs.fee_mask,
             params.priority,
             outputs.outputs,
-            null,
+            params.payment_id_string,
             null
         )
         if (typeof decoy.err_msg !== 'undefined') {
             throw new Error(decoy.err_msg)
         }
 
-		const amounts = decoy.using_outs.map(o => (o.rct ? '0' : o.amount.toString()))
-		const linkParams = {
-			amounts,
-			count: MIXIN + 1
-		}
+        const amounts = decoy.using_outs.map(o => (o.rct ? '0' : o.amount.toString()))
+        const linkParams = {
+            amounts,
+            count: MIXIN + 1
+        }
 
-		let random = await params.get_random_outs_fn(linkParams)
+        let random = await params.get_random_outs_fn(linkParams)
 
         let tx = await this.send_step2__try_create_transaction(
             params.from_address_string,
@@ -704,7 +704,7 @@ class MyMoneroCoreBridgeRN {
             used_fee : decoy.using_fee,
             serialized_signed_tx : tx.signed_serialized_tx,
             tx_hash : tx.tx_hash
-        }
+    }
 	}
 
 }
