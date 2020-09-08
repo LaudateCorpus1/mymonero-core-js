@@ -684,7 +684,7 @@ class MyMoneroCoreBridgeRN {
 
         let tx = await this.send_step2__try_create_transaction(
             params.from_address_string,
-            {view:params.sec_viewKey_string,spend:params.sec_spendKey_string},
+            { view: params.sec_viewKey_string, spend: params.sec_spendKey_string },
             params.to_address_string,
             decoy.using_outs,
             random.amount_outs,
@@ -701,11 +701,12 @@ class MyMoneroCoreBridgeRN {
         )
 
         return {
-            used_fee : decoy.using_fee,
-            serialized_signed_tx : tx.signed_serialized_tx,
-            tx_hash : tx.tx_hash
+            used_fee: decoy.using_fee,
+            serialized_signed_tx: tx.signed_serialized_tx,
+            tx_hash: tx.tx_hash,
+            using_outs: decoy.using_outs
+        }
     }
-	}
 
 }
 
