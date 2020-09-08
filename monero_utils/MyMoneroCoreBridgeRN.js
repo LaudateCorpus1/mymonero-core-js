@@ -692,7 +692,7 @@ class MyMoneroCoreBridgeRN {
             decoy.final_total_wo_fee,
             decoy.change_amount,
             decoy.using_fee,
-            params.payment_id,
+            params.payment_id_string,
             params.priority,
             outputs.per_byte_fee, // not kib - if fee_per_kb, /= 1024
             outputs.fee_mask,

@@ -84,7 +84,7 @@ module.exports = function(options)
 	}
 	return new Promise(function(resolve, reject) {
 		var Module_template = {}
-		if ((options.asmjs != true || options.wasm == true)) { // wasm is force
+		if (options.asmjs != true || options.wasm == true) { // wasm is force
 			console.log("Using wasm: ", true)
 			//
 			Module_template["locateFile"] = locateFile
@@ -127,7 +127,7 @@ module.exports = function(options)
 			if (ENVIRONMENT_IS_NODE) {
 				read_fn = function(filepath)
 				{
-					return require("fs").readFileSync(require("path").normalize(filepath)).toString()
+					//return require("fs").readFileSync(require("path").normalize(filepath)).toString()
 				};
 			} else if (ENVIRONMENT_IS_WEB||ENVIRONMENT_IS_WORKER) {
 				read_fn = function(url)
