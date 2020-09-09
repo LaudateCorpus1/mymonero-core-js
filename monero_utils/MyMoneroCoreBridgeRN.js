@@ -660,13 +660,28 @@ class MyMoneroCoreBridgeRN {
             view_key: params.sec_viewKey_string
         })
 
+        let checked = []
+        if (outputs.outputs) {
+            for (let out of outputs.outputs) {
+                let used = false
+                let keyimage = await this.generate_key_image(out.tx_pub_key, params.sec_viewKey_string, params.pub_spendKey_string, params.sec_spendKey_string, out.index)
+                for (let key of out.spend_key_images) {
+                    if (key === keyimage) {
+                        used = true
+                    }
+                }
+                if (!used) {
+                    checked.push(out)
+                }
+            }
+        }
         let decoy = await this.send_step1__prepare_params_for_get_decoys(
             false,
             params.sending_amount, // this may be 0 if sweeping
             outputs.per_byte_fee,
             outputs.fee_mask,
             params.priority,
-            outputs.outputs,
+            checked,
             params.payment_id_string,
             null
         )
