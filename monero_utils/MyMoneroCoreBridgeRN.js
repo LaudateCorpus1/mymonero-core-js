@@ -634,6 +634,7 @@ class MyMoneroCoreBridgeRN {
      * @param params.is_sweeping,
      * @param params.payment_id_string // may be nil or undefined
      * @param params.sending_amount // sending amount
+     * @param params.sending_all
      * @param params.from_address_string
      * @param params.sec_viewKey_string
      * @param params.sec_spendKey_string
@@ -675,9 +676,10 @@ class MyMoneroCoreBridgeRN {
                 }
             }
         }
+        let using_amount = params.sending_amount
         let decoy = await this.send_step1__prepare_params_for_get_decoys(
             false,
-            params.sending_amount, // this may be 0 if sweeping
+            using_amount, // this may be 0 if sweeping
             outputs.per_byte_fee,
             outputs.fee_mask,
             params.priority,
@@ -685,6 +687,25 @@ class MyMoneroCoreBridgeRN {
             params.payment_id_string,
             null
         )
+
+        if (typeof decoy.err_msg !== 'undefined') {
+            if (typeof params.sending_all !== 'undefined' && params.sending_all && typeof decoy.spendable_balance !== 'undefined') {
+                using_amount = decoy.spendable_balance - (decoy.required_balance - decoy.spendable_balance)
+                if (using_amount > 0) {
+                    decoy = await this.send_step1__prepare_params_for_get_decoys(
+                        false,
+                        using_amount,
+                        outputs.per_byte_fee,
+                        outputs.fee_mask,
+                        params.priority,
+                        checked,
+                        params.payment_id_string,
+                        null
+                    )
+                }
+            }
+        }
+
         if (typeof decoy.err_msg !== 'undefined') {
             throw new Error(decoy.err_msg)
         }
@@ -719,7 +740,8 @@ class MyMoneroCoreBridgeRN {
             used_fee: decoy.using_fee,
             serialized_signed_tx: tx.signed_serialized_tx,
             tx_hash: tx.tx_hash,
-            using_outs: decoy.using_outs
+            using_outs: decoy.using_outs,
+            using_amount
         }
     }
 
